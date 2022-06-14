@@ -1,6 +1,7 @@
 # 设置变量
 SET(LIBHELLO_SRC ./testdll.h ./testdll.cpp)
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../lib_out)
+set(CMAKE_CXX_FLAGS "-m32")
 
 # 第一个参数为你需要构建的dll的名字，第二个为类型
 ADD_LIBRARY(testdll SHARED ${LIBHELLO_SRC})
