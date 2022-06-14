@@ -5,7 +5,7 @@
 
 ## CMakeListDemo
 
-CmakeList使用Demo，包括生成执行文件以及生成DLL的Demo。在此讲一下DLL，后面可能用到将YOLOX编译成DLL，供python调用。
+CmakeList使用Demo，包括生成执行文件以及生成DLL的Demo。在此讲一下DLL，后续会将算法模型编译成dll供程序调用。
 
 DLL可以将程序模块化为单独的组件，可参考微软官方文档：[dynamic link library](https://docs.microsoft.com/zh-cn/troubleshoot/windows-client/deployment/dynamic-link-library)，DLL具有如下优势：
 
