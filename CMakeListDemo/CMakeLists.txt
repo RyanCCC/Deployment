@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 #2. project name：指定项目名称
-project(CPP)
+project(CMakeListDemo)
 
 #3. 头文件目录
 include_directories(include)

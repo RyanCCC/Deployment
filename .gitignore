@@ -38,3 +38,4 @@
 *.vcxproj.user
 .vs
 build
+CMakeFiles
