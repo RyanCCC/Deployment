@@ -1,6 +1,7 @@
 from PIL import Image
 import numpy as np
-import tensorflow as tf
+# import tensorflow as tf
+from nms import non_max_suppression
 
 def sigmoid(x):  
     return np.exp(-np.logaddexp(0, -x))
@@ -96,12 +97,17 @@ def DecodeBox(outputs,image_shape, input_shape, class_names,confidence=0.7, max_
     for c in range(num_classes):
         class_boxes =np.array(boxes[mask[..., c]])
         class_box_scores = np.array(box_scores[..., c][mask[..., c]])
-        nms_index = tf.image.non_max_suppression(class_boxes, class_box_scores, max_boxes_tensor, iou_threshold=0.5)
+        '''
+        TODO: IMPLEMENT NON_MAX_SUPPRESSION BY NUMPY
+        '''
+        # nms_index = tf.image.non_max_suppression(class_boxes, class_box_scores, max_boxes_tensor, iou_threshold=0.5)
+        # nms_index = nms_index.numpy
+        nms_index = non_max_suppression(class_boxes, class_box_scores, threshold=0.5)
 
         if len(class_boxes) == 0:
             continue
-        class_boxes = class_boxes[nms_index.numpy()]
-        class_box_scores = class_box_scores[nms_index.numpy()]
+        class_boxes = class_boxes[nms_index]
+        class_box_scores = class_box_scores[nms_index]
         classes = np.ones_like(class_box_scores, 'int32') * c
 
         boxes_out = np.append(boxes_out, class_boxes, axis=0)

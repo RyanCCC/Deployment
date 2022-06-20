@@ -7,7 +7,7 @@ import colorsys
 import os
 
 
-image = './images/test.jpg'
+image = './images/test1.jpg'
 input_shape = [640,640]
 
 yolox = tf.keras.models.load_model('./models/yolox_model')
