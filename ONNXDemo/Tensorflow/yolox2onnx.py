@@ -2,7 +2,7 @@ import tf2onnx
 import onnxruntime as rt
 import tensorflow as tf
 from PIL import Image, ImageDraw, ImageFont
-from tools import * 
+from tools_numpy import * 
 import colorsys
 import os
 
