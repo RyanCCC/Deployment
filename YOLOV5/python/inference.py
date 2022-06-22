@@ -159,11 +159,10 @@ if __name__ == '__main__':
             'teddy bear', 'hair drier', 'toothbrush']
     conf_thres = 0.5
     nms_thres = 0.4
-    #img_path = r'C:\Users\25360\Desktop\people_test.webp.jpg'
 
     #frame = cv2.imread(img_path)
-    model_xml=r"./exported_onnx_model.xml"
-    model_bin=r"./exported_onnx_model.bin"
+    model_xml=r"../yolov5s.xml"
+    model_bin=r"../yolov5s.bin"
     ie = IECore()
     net = ie.read_network(model=model_xml, weights=model_bin)
     #双请求，自动分配GPU及CPU资源：
@@ -171,7 +170,7 @@ if __name__ == '__main__':
     input_layer = next(iter(net.input_info))
 
     is_async_mode = True
-    video_path = './video/test.MOV'
+    video_path = '../video/test.MOV'
     cap = cv2.VideoCapture(video_path)
     #fps = cap.get(cv2.CAP_PROP_FPS)  # 帧率
     #摄像头一次读入的帧数：

@@ -15,3 +15,10 @@ python export.py --weights ./yolov5s.pt --device '0' --batch-size 1 --imgsz (640
 2. Openvino转换
 
 执行当前路径下的`onnx2openvino.py`文件。生成`*.bin`和`*.xml`文件。
+
+### Openvino Python
+
+请看：inference文件
+
+
+### Openvino C++

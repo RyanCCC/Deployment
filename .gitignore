@@ -117,3 +117,7 @@ data/
 *.onnx
 
 video
+
+Debug
+x64
+Release
