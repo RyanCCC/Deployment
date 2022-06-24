@@ -2,7 +2,7 @@
 
 
 /**
-²Î¿¼£º
+reference:
     https://blog.csdn.net/hh1357102/article/details/124956796
     https://github.com/fb029ed/yolov5_cpp_openvino
 **/
@@ -15,7 +15,7 @@ bool YOLOV5::parse_yolov5(const Blob::Ptr& blob, int net_grid, float cof_thresho
     vector<int> anchors = get_anchors(net_grid);
     LockedMemory<const void> blobMapped = as<MemoryBlob>(blob)->rmap();
     const float* output_blob = blobMapped.as<float*>();
-    //80¸öÀàÊÇ85,Ò»¸öÀàÊÇ6,n¸öÀàÊÇn+5
+    //80ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½85,Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½6,nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½n+5
     //int item_size = 6;
     int item_size = 85;
     size_t anchor_n = 3;
@@ -25,11 +25,11 @@ bool YOLOV5::parse_yolov5(const Blob::Ptr& blob, int net_grid, float cof_thresho
             {
                 double box_prob = output_blob[n * net_grid * net_grid * item_size + i * net_grid * item_size + j * item_size + 4];
                 box_prob = sigmoid(box_prob);
-                //¿òÖÃÐÅ¶È²»Âú×ãÔòÕûÌåÖÃÐÅ¶È²»Âú×ã
+                //ï¿½ï¿½ï¿½ï¿½ï¿½Å¶È²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¶È²ï¿½ï¿½ï¿½ï¿½ï¿½
                 if (box_prob < cof_threshold)
                     continue;
 
-                //×¢Òâ´Ë´¦Êä³öÎªÖÐÐÄµã×ø±ê,ÐèÒª×ª»¯Îª½Çµã×ø±ê
+                //×¢ï¿½ï¿½Ë´ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½Òª×ªï¿½ï¿½Îªï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½
                 double x = output_blob[n * net_grid * net_grid * item_size + i * net_grid * item_size + j * item_size + 0];
                 double y = output_blob[n * net_grid * net_grid * item_size + i * net_grid * item_size + j * item_size + 1];
                 double w = output_blob[n * net_grid * net_grid * item_size + i * net_grid * item_size + j * item_size + 2];
@@ -46,7 +46,7 @@ bool YOLOV5::parse_yolov5(const Blob::Ptr& blob, int net_grid, float cof_thresho
                     }
                 }
                 float cof = box_prob * max_prob;
-                //¶ÔÓÚ±ß¿òÖÃÐÅ¶ÈÐ¡ÓÚãÐÖµµÄ±ß¿ò,²»¹ØÐÄÆäËûÊýÖµ,²»½øÐÐ¼ÆËã¼õÉÙ¼ÆËãÁ¿
+                //ï¿½ï¿½ï¿½Ú±ß¿ï¿½ï¿½ï¿½ï¿½Å¶ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµï¿½Ä±ß¿ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ,ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½Ù¼ï¿½ï¿½ï¿½ï¿½ï¿½
                 if (cof < cof_threshold)
                     continue;
 
@@ -71,7 +71,7 @@ bool YOLOV5::init(string xml_path, double cof_threshold, double nms_area_thresho
     _nms_area_threshold = nms_area_threshold;
     Core ie;
     auto cnnNetwork = ie.ReadNetwork(_xml_path);
-    //ÊäÈëÉèÖÃ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     InputsDataMap inputInfo(cnnNetwork.getInputsInfo());
     InputInfo::Ptr& input = inputInfo.begin()->second;
     _input_name = inputInfo.begin()->first;
@@ -80,12 +80,12 @@ bool YOLOV5::init(string xml_path, double cof_threshold, double nms_area_thresho
     ICNNNetwork::InputShapes inputShapes = cnnNetwork.getInputShapes();
     SizeVector& inSizeVector = inputShapes.begin()->second;
     cnnNetwork.reshape(inputShapes);
-    //Êä³öÉèÖÃ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     _outputinfo = OutputsDataMap(cnnNetwork.getOutputsInfo());
     for (auto& output : _outputinfo) {
         output.second->setPrecision(Precision::FP32);
     }
-    //»ñÈ¡¿ÉÖ´ÐÐÍøÂç
+    //ï¿½ï¿½È¡ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     //_network =  ie.LoadNetwork(cnnNetwork, "GPU");
     _network = ie.LoadNetwork(cnnNetwork, "CPU");
     return true;
@@ -97,7 +97,7 @@ bool YOLOV5::uninit() {
 
 bool YOLOV5::process_frame(Mat& inframe, vector<Object>& detected_objects) {
     if (inframe.empty()) {
-        cout << "ÎÞÐ§Í¼Æ¬ÊäÈë" << endl;
+        cout << "ï¿½ï¿½Ð§Í¼Æ¬ï¿½ï¿½ï¿½ï¿½" << endl;
         return false;
     }
     resize(inframe, inframe, Size(640, 640));
@@ -115,9 +115,9 @@ bool YOLOV5::process_frame(Mat& inframe, vector<Object>& detected_objects) {
             }
         }
     }
-    //Ö´ÐÐÔ¤²â
+    //Ö´ï¿½ï¿½Ô¤ï¿½ï¿½
     infer_request->Infer();
-    //»ñÈ¡¸÷²ã½á¹û
+    //ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     vector<Rect> origin_rect;
     vector<float> origin_rect_cof;
     int s[3] = { 80,40,20 };
@@ -128,10 +128,10 @@ bool YOLOV5::process_frame(Mat& inframe, vector<Object>& detected_objects) {
         parse_yolov5(blob, s[i], _cof_threshold, origin_rect, origin_rect_cof);
         ++i;
     }
-    //ºó´¦Àí»ñµÃ×îÖÕ¼ì²â½á¹û
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½
     vector<int> final_id;
     dnn::NMSBoxes(origin_rect, origin_rect_cof, _cof_threshold, _nms_area_threshold, final_id);
-    //¸ù¾Ýfinal_id»ñÈ¡×îÖÕ½á¹û
+    //ï¿½ï¿½ï¿½ï¿½final_idï¿½ï¿½È¡ï¿½ï¿½ï¿½Õ½ï¿½ï¿½
     for (int i = 0; i < final_id.size(); ++i) {
         Rect resize_rect = origin_rect[final_id[i]];
         detected_objects.push_back(Object{

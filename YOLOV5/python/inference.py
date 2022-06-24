@@ -1,12 +1,16 @@
 '''
 使用openvino对视频进行异步推理
 '''
+from charset_normalizer import from_path
 import cv2
+from cv2 import rotate
 import numpy as np
 import yaml
 from openvino.inference_engine import IECore
 from openvino.runtime import Core  # the version of openvino >= 2022.1
 import random
+from PIL import Image
+import skvideo.io
 
 def letterbox(img, new_shape=(640, 640), color=(114, 114, 114), scaleup=False, stride=32):
     """
@@ -171,6 +175,14 @@ if __name__ == '__main__':
 
     is_async_mode = True
     video_path = '../video/test.MOV'
+    metadata = skvideo.io.ffprobe(video_path)
+    rotate_angle = 0
+    try:
+        d = metadata['video'].get('tag')[0]
+        if d.setdefault('@key') == 'rotate':
+            rotate_angle = int(d.setdefault('@value'))
+    except:
+        pass
     cap = cv2.VideoCapture(video_path)
     #fps = cap.get(cv2.CAP_PROP_FPS)  # 帧率
     #摄像头一次读入的帧数：
@@ -205,6 +217,11 @@ if __name__ == '__main__':
             ret, frame = cap.read()
         if not ret:
             break
+        # 是否需要旋转frame
+        frame = Image.fromarray(frame)
+        frame = np.array(frame.rotate(-rotate_angle))
+        # frame.show()
+
 
         if is_async_mode:
             request_id = next_request_id
