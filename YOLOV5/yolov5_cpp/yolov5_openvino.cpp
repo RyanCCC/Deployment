@@ -15,7 +15,6 @@ bool YOLOV5::parse_yolov5(const Blob::Ptr& blob, int net_grid, float cof_thresho
     vector<int> anchors = get_anchors(net_grid);
     LockedMemory<const void> blobMapped = as<MemoryBlob>(blob)->rmap();
     const float* output_blob = blobMapped.as<float*>();
-    //80������85,һ������6,n������n+5
     //int item_size = 6;
     int item_size = 85;
     size_t anchor_n = 3;
@@ -25,11 +24,9 @@ bool YOLOV5::parse_yolov5(const Blob::Ptr& blob, int net_grid, float cof_thresho
             {
                 double box_prob = output_blob[n * net_grid * net_grid * item_size + i * net_grid * item_size + j * item_size + 4];
                 box_prob = sigmoid(box_prob);
-                //�����ŶȲ��������������ŶȲ�����
                 if (box_prob < cof_threshold)
                     continue;
 
-                //ע��˴����Ϊ���ĵ�����,��Ҫת��Ϊ�ǵ�����
                 double x = output_blob[n * net_grid * net_grid * item_size + i * net_grid * item_size + j * item_size + 0];
                 double y = output_blob[n * net_grid * net_grid * item_size + i * net_grid * item_size + j * item_size + 1];
                 double w = output_blob[n * net_grid * net_grid * item_size + i * net_grid * item_size + j * item_size + 2];
@@ -46,7 +43,6 @@ bool YOLOV5::parse_yolov5(const Blob::Ptr& blob, int net_grid, float cof_thresho
                     }
                 }
                 float cof = box_prob * max_prob;
-                //���ڱ߿����Ŷ�С����ֵ�ı߿�,������������ֵ,�����м�����ټ�����
                 if (cof < cof_threshold)
                     continue;
 
@@ -71,7 +67,6 @@ bool YOLOV5::init(string xml_path, double cof_threshold, double nms_area_thresho
     _nms_area_threshold = nms_area_threshold;
     Core ie;
     auto cnnNetwork = ie.ReadNetwork(_xml_path);
-    //��������
     InputsDataMap inputInfo(cnnNetwork.getInputsInfo());
     InputInfo::Ptr& input = inputInfo.begin()->second;
     _input_name = inputInfo.begin()->first;
@@ -80,12 +75,10 @@ bool YOLOV5::init(string xml_path, double cof_threshold, double nms_area_thresho
     ICNNNetwork::InputShapes inputShapes = cnnNetwork.getInputShapes();
     SizeVector& inSizeVector = inputShapes.begin()->second;
     cnnNetwork.reshape(inputShapes);
-    //�������
     _outputinfo = OutputsDataMap(cnnNetwork.getOutputsInfo());
     for (auto& output : _outputinfo) {
         output.second->setPrecision(Precision::FP32);
     }
-    //��ȡ��ִ������
     //_network =  ie.LoadNetwork(cnnNetwork, "GPU");
     _network = ie.LoadNetwork(cnnNetwork, "CPU");
     return true;
@@ -97,7 +90,7 @@ bool YOLOV5::uninit() {
 
 bool YOLOV5::process_frame(Mat& inframe, vector<Object>& detected_objects) {
     if (inframe.empty()) {
-        cout << "��ЧͼƬ����" << endl;
+        cout << "processing..." << endl;
         return false;
     }
     resize(inframe, inframe, Size(640, 640));
@@ -115,9 +108,7 @@ bool YOLOV5::process_frame(Mat& inframe, vector<Object>& detected_objects) {
             }
         }
     }
-    //ִ��Ԥ��
     infer_request->Infer();
-    //��ȡ������
     vector<Rect> origin_rect;
     vector<float> origin_rect_cof;
     int s[3] = { 80,40,20 };
@@ -128,10 +119,8 @@ bool YOLOV5::process_frame(Mat& inframe, vector<Object>& detected_objects) {
         parse_yolov5(blob, s[i], _cof_threshold, origin_rect, origin_rect_cof);
         ++i;
     }
-    //����������ռ����
     vector<int> final_id;
     dnn::NMSBoxes(origin_rect, origin_rect_cof, _cof_threshold, _nms_area_threshold, final_id);
-    //����final_id��ȡ���ս��
     for (int i = 0; i < final_id.size(); ++i) {
         Rect resize_rect = origin_rect[final_id[i]];
         detected_objects.push_back(Object{
