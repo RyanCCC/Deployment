@@ -44,6 +44,9 @@ This is a tensorflow keras model, but keras standalone converter is used. Please
 
 ## OpenVino部署
 
+OpenVino环境要求“很高”，如下所示，把我给劝退了。后续还是专心于TensorRT，有时间再玩一下OpenVino。具体操作代码在[YOLOV5 CPP](https://github.com/RyanCCC/Deployment/tree/main/YOLOV5/yolov5_cpp)
+
+![image](https://user-images.githubusercontent.com/27406337/176431886-1d6f9606-62f4-43b9-b411-8dad772f1dcd.png)
 
 
 ## Tensorflow Serving部署
