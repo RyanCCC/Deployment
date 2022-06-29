@@ -42,3 +42,5 @@ python export.py --weights ./yolov5s.pt --device '0' --batch-size 1 --imgsz (640
 
 1. [C++ yolov5 TensorRT](https://blog.csdn.net/qq_34919792/article/details/120650792)
 2. [C++ yolov5 openvino](https://blog.csdn.net/qq_40700822/article/details/115709175)
+3. [tensorrtx/tree/master/yolov5](https://github.com/wang-xinyu/tensorrtx/tree/master/yolov5)
+4. [yolov5_cpp_openvino](https://github.com/fb029ed/yolov5_cpp_openvino)
