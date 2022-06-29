@@ -201,7 +201,7 @@ def detect(session, image_src, num_classes=80):
 
 
 '''
-该推理用到的模型是Pytorch转换成ONNX模型进行推理,该ONNX模型可以通过pytorch的文件夹下的转换脚本得到，原pytorch的yolov4可以通过百度网盘下载，详见仓库下的readme
+该推理用到的模型是Pytorch转换成ONNX模型进行推理,该ONNX模型可以通过pytorch的文件夹下的转换脚本得到，原pytorch的yolov4可以通过百度网盘下载，详见仓库下的ReadMe
 '''
 onnx_path = './Pytorch/models/yolov4_1_3_416_416_static.onnx'
 image = './images/giraffe.jpg'

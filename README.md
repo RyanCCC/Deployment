@@ -3,7 +3,7 @@
 部署深度学习应用
 
 
-## CMakeListDemo
+## CMakeList
 
 CmakeList使用Demo，包括生成执行文件以及生成DLL的Demo。在此讲一下DLL，后续会将算法模型编译成dll供程序调用。
 
@@ -36,14 +36,16 @@ This is a tensorflow keras model, but keras standalone converter is used. Please
 ```
 - Tensorflow
 
+主要使用`tf2onnx`模块
 
-
-## YOLO系列的部署
-
-### TensorRT
-
+## TensorRT部署
 
 
 
-### OpenVino
+## OpenVino部署
 
+
+
+## Tensorflow Serving部署
+
+可参考我的博客：[模型部署 利用Tensorflow Serving部署模型](https://blog.csdn.net/u012655441/article/details/125332182)
