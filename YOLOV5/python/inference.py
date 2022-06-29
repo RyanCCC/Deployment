@@ -165,8 +165,8 @@ if __name__ == '__main__':
     nms_thres = 0.4
 
     #frame = cv2.imread(img_path)
-    model_xml=r"../yolov5s.xml"
-    model_bin=r"../yolov5s.bin"
+    model_xml=r"./yolov5s.xml"
+    model_bin=r"./yolov5s.bin"
     ie = IECore()
     net = ie.read_network(model=model_xml, weights=model_bin)
     #双请求，自动分配GPU及CPU资源：

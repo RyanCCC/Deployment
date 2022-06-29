@@ -10,8 +10,12 @@ using namespace InferenceEngine;
 
 int main(int argc, char** argv)
 {
+    
+
     YOLOV5* detector = new YOLOV5;
-    string xml_path = "../res/yolov5s.xml";
+    string xml_path = "D://Code//MyGithub//Deployment//YOLOV5//yolov5s.xml";
+    Core ie;
+    auto cnnNetwork = ie.ReadNetwork(xml_path);
     detector->init(xml_path, 0.1, 0.5);
     /*
     VideoCapture capture;
@@ -33,7 +37,7 @@ int main(int argc, char** argv)
         waitKey(1);
     }
     */
-    Mat src = imread("../res/bus.jpg");
+    Mat src = imread("./giraffe.jpg");
     Mat osrc = src.clone();
     resize(osrc, osrc, Size(640, 640));
     vector<YOLOV5::Object> detected_objects;
