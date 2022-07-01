@@ -9,6 +9,7 @@ print(trt.__version__)
 参考：
 https://developer.nvidia.com/zh-cn/blog/tensorrt-python-interface-cn/ 
 https://github.com/NVIDIA/TensorRT/blob/main/samples/python/introductory_parser_samples/onnx_resnet50.py
+https://blog.csdn.net/qq_33287871/article/details/116012659
 '''
 
 import os
@@ -54,8 +55,13 @@ def build_engine_onnx(model_file):
             for error in range(parser.num_errors):
                 print(parser.get_error(error))
             return None
-    return builder.build_engine(network, config)
-
+    
+    # 将onnx模型转换成engine
+    engine =  builder.build_engine(network, config)
+    with open('./yolov4.engine', 'wb') as f:
+        f.write(engine.serialize())
+    
+    return engine
 
 def load_normalized_test_case(test_image, pagelocked_buffer):
     # Converts the input image to a CHW Numpy array
@@ -122,15 +128,22 @@ def do_inference_v2(context, bindings, inputs, outputs, stream):
     # Return only the host outputs.
     return [out.host for out in outputs]
 
+def loadEngine(engine_file):
+    with open(engine_file, 'rb') as f, trt.Runtime(TRT_LOGGER) as runtime:
+        engine = runtime.deserialize_cuda_engine(f.read())
+    return engine
+
 def main():
     # Set the data path to the directory that contains the trained models and test images for inference.
     # Get test images, models and labels.
     test_images = ['./images/giraffe.jpg']
     onnx_model_file = './Pytorch/models/yolov4_1_3_416_416_static.onnx'
     labels = open('data/coco.names', "r").read().split("\n")
+    engine_file = './yolov4.engine'
+    engine = loadEngine(engine_file)
 
     # Build a TensorRT engine.
-    engine = build_engine_onnx(onnx_model_file)
+    # engine = build_engine_onnx(onnx_model_file)
     # Inference is the same regardless of which parser is used to build the engine, since the model architecture is the same.
     # Allocate buffers and create a CUDA stream.
     inputs, outputs, bindings, stream = allocate_buffers(engine)
