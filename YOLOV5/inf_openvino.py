@@ -2,8 +2,8 @@ from openvino.inference_engine import IENetwork, IECore
 import cv2
 import numpy as np
 
-model_xml = '../YOLOV5/yolov5s.xml'
-model_bin = '../YOLOV5/yolov5s.bin'
+model_xml = './yolov5s.xml'
+model_bin = './yolov5s.bin'
 image = './images/giraffe.jpg'
 ie = IECore()
 net = IENetwork(model=model_xml, weights=model_bin)
