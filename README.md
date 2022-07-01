@@ -40,7 +40,7 @@ This is a tensorflow keras model, but keras standalone converter is used. Please
 
 ## TensorRT部署
 
-TensorRT部署经常会遇到版本问题。在Windows+Python+Tensorrt8.4.15环境搭建起来比较麻烦，建议在Linux+CPP+TensorRT这样搭配会好一点。
+TensorRT部署经常会遇到版本问题。在Windows+Python+Tensorrt8.4.15环境搭建起来比较麻烦，建议在Linux+CPP+TensorRT这样搭配会好一点。这一块主要以YOLOX为例子完成Linux平台下C++的Tensorrt部署。
 
 ## OpenVino部署
 
