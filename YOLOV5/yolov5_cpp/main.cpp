@@ -1,4 +1,4 @@
-﻿#include "inference_engine.hpp"
+﻿#include <inference_engine.hpp>
 #include "opencv2/opencv.hpp"
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
@@ -13,7 +13,10 @@ int main(int argc, char** argv)
     
 
     YOLOV5* detector = new YOLOV5;
-    string xml_path = "D://Code//MyGithub//Deployment//YOLOV5//yolov5s.xml";
+    string xml_path = "D:/Code/MyGithub/Deployment/YOLOV5/yolov5s.onnx";
+    string bin_path = "D:/Code/MyGithub/Deployment/YOLOV5/yolov5s.bin";
+
+
     Core ie;
     auto cnnNetwork = ie.ReadNetwork(xml_path);
     detector->init(xml_path, 0.1, 0.5);
