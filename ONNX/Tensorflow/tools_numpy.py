@@ -97,9 +97,6 @@ def DecodeBox(outputs,image_shape, input_shape, class_names,confidence=0.7, max_
     for c in range(num_classes):
         class_boxes =np.array(boxes[mask[..., c]])
         class_box_scores = np.array(box_scores[..., c][mask[..., c]])
-        '''
-        TODO: IMPLEMENT NON_MAX_SUPPRESSION BY NUMPY
-        '''
         # nms_index = tf.image.non_max_suppression(class_boxes, class_box_scores, max_boxes_tensor, iou_threshold=0.5)
         # nms_index = nms_index.numpy
         nms_index = non_max_suppression(class_boxes, class_box_scores, threshold=0.5)

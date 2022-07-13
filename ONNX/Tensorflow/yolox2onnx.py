@@ -44,7 +44,7 @@ data = json.dumps({
     })
 headers = {"content-type": "application/json"}
 tfx_pred = requests.post(
-    'http://172.18.80.69:8501/v1/models/yolox_model:predict',
+    'http://***.****.***.***:8501/v1/models/yolox_model:predict',
     data=data, headers=headers)
 boxes_1 = json.loads(tfx_pred.text)['predictions'][0]['concatenate_13']
 boxes_2 = json.loads(tfx_pred.text)['predictions'][0]['concatenate_14']
