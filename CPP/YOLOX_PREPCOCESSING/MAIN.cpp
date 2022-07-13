@@ -32,7 +32,7 @@ Mat resizeKeepAspectRatio(const Mat& img, int target_width = 500) {
         roi.x = (target_width - roi.width) / 2;
     }
 
-    imshow("square", square(roi));
+    //imshow("square", square(roi));
 
     cv::resize(img, square(roi), roi.size());
 
@@ -68,6 +68,10 @@ int main()
     auto resize_img = resizeImg(src);
     
     //2. expand dimension
+    int size_1[4] = { 1, ori_width, ori_height, ori_depth };
+    Mat output_(4, size_1, src.type(), src.data);
+
+    cout << "output_: " << output_.size << endl;
 
 
     imshow("Test", src);
