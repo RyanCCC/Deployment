@@ -53,6 +53,29 @@ Mat resizeImg(const Mat& img, int target_width = 500, int target_height = 500) {
     return square;
 }
 
+//YOLOV5的预处理
+static inline Mat preprocess_img(Mat& img, int input_w, int input_h) {
+    int w, h, x, y;
+    float r_w = input_w / (img.cols * 1.0);
+    float r_h = input_h / (img.rows * 1.0);
+    if (r_h > r_w) {
+        w = input_w;
+        h = r_w * img.cols;
+        x = 0;
+        y = (input_h - h) / 2;
+    }
+    else {
+        w = r_h * img.cols;
+        h = input_h;
+        x = (input_w - w) / 2;
+        y = 0;
+    }
+    Mat re(h, w, CV_8UC3);
+    resize(img, re, re.size(), 0, 0, cv::INTER_LINEAR);
+    Mat out(input_h, input_w, CV_8UC3, cv::Scalar(128, 128, 128));
+    re.copyTo(out(cv::Rect(x, y, re.cols, re.rows)));
+    return out;
+}
 
 int main()
 {
@@ -66,6 +89,7 @@ int main()
     //1. resize
     auto keep_resize_img = resizeKeepAspectRatio(src);
     auto resize_img = resizeImg(src);
+    Mat process_img = preprocess_img(src, yolox.input_width, yolox.input_height);
     
     //2. expand dimension
     int size_1[4] = { 1, ori_width, ori_height, ori_depth };
@@ -77,6 +101,7 @@ int main()
     imshow("Test", src);
     imshow("keep_resize", keep_resize_img);
     imshow("resize", resize_img);
+    imshow("preprocess", process_img);
     waitKey(0);
     destroyAllWindows();
     return 0;
