@@ -13,8 +13,8 @@ int main(int argc, char** argv)
     
 
     YOLOV5* detector = new YOLOV5;
-    string xml_path = "D:/Code/MyGithub/Deployment/YOLOV5/yolov5s.onnx";
-    string bin_path = "D:/Code/MyGithub/Deployment/YOLOV5/yolov5s.bin";
+    string xml_path = "../yolov5s.onnx";
+    string bin_path = "../yolov5s.bin";
 
 
     Core ie;

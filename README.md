@@ -5,7 +5,7 @@
 
 ## CMakeList
 
-CmakeList使用Demo，包括生成执行文件以及生成DLL的Demo。在此讲一下DLL，后续会将算法模型编译成dll供程序调用。
+CmakeList的Demo，包括生成执行文件以及生成DLL的Demo。在此讲一下DLL，后续会将算法模型编译成dll供程序调用。
 
 DLL可以将程序模块化为单独的组件，可参考微软官方文档：[dynamic link library](https://docs.microsoft.com/zh-cn/troubleshoot/windows-client/deployment/dynamic-link-library)，DLL具有如下优势：
 
@@ -14,7 +14,7 @@ DLL可以将程序模块化为单独的组件，可参考微软官方文档：[d
 - 简化部署和安装。
 
 DLL编译过程：注意根目录指的是`CMakeListDemo\dllDemo\`
-1. 在下运行`cmake`命令，在根目录和lib目录下编译出`Makefile`文件
+1. 在根目录运行`cmake`命令，在根目录和lib目录下编译出`Makefile`文件
 2. 在根目录或者lib目录下使用`make install`即可编译出`DLL`库
 3. 在根目录的`lib_out`下生成了DLL，名称为`testdll.dll`
 
@@ -65,7 +65,7 @@ TensorRT部署经常会遇到版本问题。在Windows+Python+Tensorrt8.4.15环�
 
 ## OpenVino部署
 
-OpenVino环境要求“很高”，如下所示，把我给劝退了。后续还是专心于TensorRT，有时间再玩一下OpenVino。具体操作代码在[YOLOV5 CPP](https://github.com/RyanCCC/Deployment/tree/main/YOLOV5/yolov5_cpp)
+OpenVino环境要求“很高”，如下所示，把我给劝退了。后续还是专心于TensorRT，有时间再玩一下OpenVino。具体操作代码在[YOLOV5 CPP](https://github.com/RyanCCC/Deployment/tree/main/YOLOV5/yolov5_cpp)。OpenVINO的对象主要使用的是YOLOV5。
 
 ![image](https://user-images.githubusercontent.com/27406337/176431886-1d6f9606-62f4-43b9-b411-8dad772f1dcd.png)
 
