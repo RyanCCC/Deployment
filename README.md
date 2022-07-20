@@ -59,6 +59,22 @@ save_model_to_saved_model(sess_tf, input_tensor, output_tensor)
 
 转换成pb格式后使用tf2onnx即可转换成onnx
 
+### 遇到问题
+
+1. numpy() is only available when eager execution is enabled
+
+![image](https://user-images.githubusercontent.com/27406337/179925058-f3a29d58-feb1-4b21-ba6a-c50a2bbc7db3.png)
+
+之前也遇到过这个问题，大概意思是在tensorflow计算图下只能使用tensorflow框架下的运算算子，而不能使用tensorflow外的算子。
+
+解决方案：
+
+![image](https://user-images.githubusercontent.com/27406337/179925509-cfc5b97e-972f-4626-9d79-941ac326581c.png)
+
+![image](https://user-images.githubusercontent.com/27406337/179925667-2a8cff68-596d-43c9-a911-b836e69a3712.png)
+
+
+
 ## TensorRT部署
 
 TensorRT部署经常会遇到版本问题。在Windows+Python+Tensorrt8.4.15环境搭建起来比较麻烦，建议在Linux+CPP+TensorRT这样搭配会好一点。这一块主要以YOLOX为例子完成Linux平台下C++的Tensorrt部署。
