@@ -13,11 +13,9 @@ import tf2onnx
 from tqdm import tqdm
 import onnxruntime as ort
 
-tf.compat.v1.enable_eager_execution()
-
 img_pattern  = './samples/*.jpg'
-model_path = './models/maskrcnn_coco'
-class_path = './data/coco_classes.txt'
+model_path = './models/building_model'
+class_path = './data/building.names'
 
 class intEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -81,9 +79,9 @@ for image_name in tqdm(glob(img_pattern)):
     anchors = get_anchors(InferenceConfig,image_shape)
     anchors = np.broadcast_to(anchors, (1,) + anchors.shape)
     
-    onnx_pred =onnx_model.run(outputs_names, {"input_image":molded_images.astype(np.float32), "input_image_meta":image_metas.astype(np.float32), "input_anchors":anchors.astype(np.float32)})
-    detections, _, _, mrcnn_mask, _, _, _ = onnx_pred
-    # detections, _, _, mrcnn_mask, _, _, _ =model.predict([molded_images, image_metas, anchors], verbose=0)
+    detections, _, _, mrcnn_mask, _, _, _ =onnx_model.run(outputs_names, {"input_image":molded_images.astype(np.float32), "input_image_meta":image_metas.astype(np.float32), "input_anchors":anchors.astype(np.float32)})
+    
+    detections, _, _, mrcnn_mask, _, _, _ =model.predict([molded_images, image_metas, anchors], verbose=0)
     final_rois, final_class_ids, final_scores, final_masks =unmold_detections(detections[0], mrcnn_mask[0],image[0].shape, molded_images[0].shape,windows[0])
 
     r = {

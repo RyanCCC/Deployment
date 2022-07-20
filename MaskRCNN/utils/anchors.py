@@ -1,9 +1,7 @@
 import numpy as np
 import math
 from utils.utils import norm_boxes
-#----------------------------------------------------------#
-#  Anchors
-#----------------------------------------------------------#
+
 def generate_anchors(scales, ratios, shape, feature_stride, anchor_stride):
     # 获得所有框的长度和比例的组合
     scales, ratios = np.meshgrid(np.array(scales), np.array(ratios))

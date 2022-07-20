@@ -12,9 +12,6 @@ ROOT_DIR = os.path.abspath("../")
 
 sys.path.append(ROOT_DIR)
 
-#---------------------------------------------------------#
-#  Visualization
-#---------------------------------------------------------#
 def random_colors(N, bright=True):
     """
     生成随机颜色

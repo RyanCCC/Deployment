@@ -1,26 +1,15 @@
-import sys
-import os
-import logging
-import math
 import random
 import skimage
 import skimage.transform
 import numpy as np
-import tensorflow as tf
 import scipy
 import urllib.request
 import shutil
 import warnings
 from distutils.version import LooseVersion
 
-tf.compat.v1.disable_eager_execution()
 # URL from which to download the latest COCO trained weights
 COCO_MODEL_URL = "https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5"
-
-
-#----------------------------------------------------------#
-#  Bounding Boxes
-#----------------------------------------------------------#
 
 def extract_bboxes(mask):
     # 利用语义分割的mask找到包围它的框
@@ -165,8 +154,8 @@ def box_refinement_graph(box, gt_box):
     """
         编码运算
     """
-    box = tf.cast(box, tf.float32)
-    gt_box = tf.cast(gt_box, tf.float32)
+    box = np.cast(box, np.float32)
+    gt_box = np.cast(gt_box, np.float32)
 
     height = box[:, 2] - box[:, 0]
     width = box[:, 3] - box[:, 1]
@@ -180,10 +169,10 @@ def box_refinement_graph(box, gt_box):
 
     dy = (gt_center_y - center_y) / height
     dx = (gt_center_x - center_x) / width
-    dh = tf.math.log(gt_height / height)
-    dw = tf.math.log(gt_width / width)
+    dh = np.math.log(gt_height / height)
+    dw = np.math.log(gt_width / width)
 
-    result = tf.stack([dy, dx, dh, dw], axis=1)
+    result = np.stack([dy, dx, dh, dw], axis=1)
     return result
 
 
@@ -545,7 +534,7 @@ def batch_slice(inputs, graph_fn, batch_size, names=None):
     if names is None:
         names = [None] * len(outputs)
 
-    result = [tf.stack(o, axis=0, name=n)
+    result = [np.stack(o, axis=0, name=n)
               for o, n in zip(outputs, names)]
     if len(result) == 1:
         result = result[0]
@@ -732,10 +721,10 @@ def norm_boxes_graph(boxes, shape):
     Returns:
         [..., (y1, x1, y2, x2)] in normalized coordinates
     """
-    h, w = tf.split(tf.cast(shape, tf.float32), 2)
-    scale = tf.concat([h, w, h, w], axis=-1) - tf.constant(1.0)
-    shift = tf.constant([0., 0., 1., 1.])
-    return tf.divide(boxes - shift, scale)
+    h, w = np.split(np.cast(shape, np.float32), 2)
+    scale = np.concat([h, w, h, w], axis=-1) - 1.0
+    shift = np.constant([0., 0., 1., 1.])
+    return np.divide(boxes - shift, scale)
 
 
 def parse_image_meta_graph(meta):
