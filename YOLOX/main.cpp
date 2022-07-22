@@ -17,6 +17,7 @@
 * 2. 会话中加载模型，得到模型的输入和输出节点
 * 3. 调用API得到模型的返回值
 */
+using namespace std;
 
 int main()
 {
@@ -88,8 +89,28 @@ int main()
             printf("Output %d : dim %d=%jd\n", i, j, output_node_dims[j]);
     }
 
+    //自定义测试用的Tensor对象
+    size_t input_tensor_size = 3 * 640 * 640;
+    std::vector<float> input_tensor_values(input_tensor_size);
+    for (unsigned int i = 0; i < input_tensor_size; i++)
+        input_tensor_values[i] = (float)i / (input_tensor_size + 1);
 
+    //为输入对象创建一个Tensor对象
+    try {
+        auto memory_info = Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault);
+        Ort::Value input_tensor = Ort::Value::CreateTensor<float>(memory_info, input_tensor_values.data(), input_tensor_size, input_node_dims.data(), 4);
 
-
-
+        //推理
+        auto output_tensors = session.Run(Ort::RunOptions{ nullptr }, input_node_names.data(), &input_tensor, 1, output_node_names.data(), num_output_nodes);
+        float* floatarr = output_tensors.front().GetTensorMutableData<float>();
+        cout << "Number of outputs = " << output_tensors.size() << endl;
+    }
+    catch (Ort::Exception& e)
+    {
+        cout << e.what() << endl;
+    }
+    auto end_time = clock();
+    cout << "Proceed exit after " << static_cast<float>(end_time - start_time) / CLOCKS_PER_SEC << " seconds";
+    cout << "Done!" << endl;
+    return 0;
 }
