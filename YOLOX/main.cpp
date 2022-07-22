@@ -1,8 +1,5 @@
-﻿#include <iostream>
-#include <vector>
-#include <assert.h>
-#include<onnxruntime_cxx_api.h>
-#include<ctime>
+﻿#include<ctime>
+#include "yoloxmodel.h"
 
 /*
 * ONNX安装地址：https://onnxruntime.ai/
@@ -19,11 +16,43 @@
 */
 using namespace std;
 
+
 int main()
 {
     //记录程序运行时间
     auto start_time = clock();
-    //初始化环境，每个进程一个环境，环境保留了线程池和其他状态信息
+    const wchar_t* model_path = L"./models/model_yolox_13.onnx";
+    printf("Using Onnxruntime C++ API\n");
+    yoloxmodelinference yolox(model_path);
+    size_t input_tensor_size = 3 * 640 * 640;
+    std::vector<float> input_tensor_values(input_tensor_size);
+
+    //初始化一个数据（演示用）
+    for (unsigned int i = 0; i < input_tensor_size; i++)
+    {
+        input_tensor_values[i] = (float)i / (input_tensor_size + 1);
+    }
+    float* results = nullptr;
+    try
+    {
+        results = yolox.predict(input_tensor_values);
+    }
+    catch (Ort::Exception& e)
+    {
+        delete results;
+        printf("%s\n", e.what());
+    }
+    auto end_time = std::clock();
+    printf("Proceed exits after %.2f seconds", static_cast<float>(end_time - start_time) / 1000);
+    printf("Done!\n");
+    return 0;
+
+}
+
+
+
+/*原始没有封装代码：
+* //初始化环境，每个进程一个环境，环境保留了线程池和其他状态信息
     Ort::Env env(ORT_LOGGING_LEVEL_WARNING, "yolox");
     //初始化session选项
     Ort::SessionOptions session_options;
@@ -113,4 +142,4 @@ int main()
     cout << "Proceed exit after " << static_cast<float>(end_time - start_time) / CLOCKS_PER_SEC << " seconds";
     cout << "Done!" << endl;
     return 0;
-}
+*/
