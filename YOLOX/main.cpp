@@ -127,7 +127,7 @@ int main()
     float* results = nullptr;
     try
     {
-        results = yolox.predict(input_tensor_values);
+        results = yolox.predict_test(input_tensor_values);
     }
     catch (Ort::Exception& e)
     {
