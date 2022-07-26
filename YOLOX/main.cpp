@@ -1,10 +1,12 @@
 ﻿#include<ctime>
 #include "yoloxmodel.h"
+using namespace cv;
 
 /*
 * ONNX安装地址：https://onnxruntime.ai/
 * 安装可参考：https://blog.csdn.net/qq_19865329/article/details/115945454
 * 安装命令：Install-Package Microsoft.ML.OnnxRuntime -Version 1.12.0
+* 可参考：https://blog.csdn.net/qq_34124780/article/details/121079317
 */
 
 
@@ -19,23 +21,32 @@ using namespace std;
 
 int main()
 {
-    
-
     //记录程序运行时间
     auto start_time = clock();
     const wchar_t* model_path = L"./models/model_yolox_13.onnx";
-    printf("Using Onnxruntime C++ API\n");
     yoloxmodelinference yolox(model_path);
+    cout << "Using OpenCV DNN API" << endl;
+    cv::dnn::Net net;
+    string model_path1 = "./models/model_yolox_13.onnx";
+    yolox.readModelDNN(net, model_path1, false);
+    //生成随机颜色
+    vector<Scalar> color;
+    srand(time(0));
+    for (int i = 0; i < 80; i++) {
+        int b = rand() % 256;
+        int g = rand() % 256;
+        int r = rand() % 256;
+        color.push_back(Scalar(b, g, r));
+    }
 
+    printf("Using Onnxruntime C++ API\n");
     //以图像进行推理
     cv::Mat image = cv::imread("./test.jpg");
     cv::resize(image, image, { 640, 640 }, 0.0, 0.0, cv::INTER_CUBIC);
     //cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
     auto result = yolox.predict(image);
-
     size_t input_tensor_size = 3 * 640 * 640;
     std::vector<float> input_tensor_values(input_tensor_size);
-
     //初始化一个数据（演示用）
     for (unsigned int i = 0; i < input_tensor_size; i++)
     {

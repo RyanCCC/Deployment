@@ -1,4 +1,7 @@
 ﻿#include "yoloxmodel.h"
+#include <dnn.hpp>
+
+using namespace cv::dnn;
 
 
 
@@ -28,6 +31,20 @@ yoloxmodelinference::yoloxmodelinference(const wchar_t* onnx_model_path):session
         auto output_node_name = session.GetOutputName(i, allocator);
         this->output_node_names.push_back(output_node_name);
     }
+}
+
+bool yoloxmodelinference::readModelDNN(cv::dnn::Net& net, std::string& netPath, bool isCuda)
+{
+    try {
+        net = readNet(netPath);
+    }
+    catch (const std::exception&) {
+        return false;
+    }
+    //cuda
+    net.setPreferableBackend(cv::dnn::DNN_BACKEND_DEFAULT);
+    net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
+    return true;
 }
 
 float* yoloxmodelinference::predict_test(std::vector<float> input_tensor_values, int batch_size)
@@ -79,7 +96,6 @@ cv::Mat yoloxmodelinference::predict(cv::Mat& input_tensor, int batch_size, int 
 
 std::vector<float> yoloxmodelinference::predict(std::vector<float>& input_tensor_values, int batch_size, int index)
 {   
-    float* floatarr = nullptr;
     try
     {
         std::vector<const char*>output_node_names;
@@ -89,7 +105,7 @@ std::vector<float> yoloxmodelinference::predict(std::vector<float>& input_tensor
         auto memory_info = Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault);
         Ort::Value input_tensor = Ort::Value::CreateTensor<float>(memory_info, input_tensor_values.data(), input_tensor_size, input_node_dims.data(), 4);
         auto output_tensors = session.Run(Ort::RunOptions{ nullptr }, input_node_names.data(), &input_tensor, 1, output_node_names.data(), output_node_names.size());
-        floatarr = output_tensors.front().GetTensorMutableData<float>();
+        auto result  = output_tensors.front().GetTensorMutableData<float>();
     }
     catch (Ort::Exception& e)
     {
@@ -97,17 +113,7 @@ std::vector<float> yoloxmodelinference::predict(std::vector<float>& input_tensor
     }
     //后处理
 
-    this->output_node_dims[0] = batch_size;
-    int64_t output_tensor_size = 1;
-    for (auto& it : this->output_node_dims)
-    {
-        output_tensor_size *= it;
-    }
-    std::vector<float>results(output_tensor_size);
-    for (unsigned i = 0; i < output_tensor_size; i++)
-    {
-        results[i] = floatarr[i];
-    }
+    std::vector<float>results(10);
     return results;
   
 }
