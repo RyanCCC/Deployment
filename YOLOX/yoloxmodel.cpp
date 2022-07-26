@@ -65,7 +65,6 @@ cv::Mat yoloxmodelinference::predict(cv::Mat& input_tensor, int batch_size, int 
     }
     try
     {
-
         output_data = this->predict(input_data);
     }
     catch (Ort::Exception& e)
