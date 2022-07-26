@@ -11,20 +11,10 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/highgui.hpp>
-#include <dnn.hpp>
-
-//输出结构体
-struct Output {
-	int id;//类别
-	float confidence;//置信度
-	cv::Rect box;//矩形框
-};
 
 class yoloxmodelinference {
 public:
 	yoloxmodelinference(const wchar_t* onnx_model_path);
-	//析构函数
-	bool readModelDNN(cv::dnn::Net& net, std::string& netPath, bool isCuda);
 	float* predict_test(std::vector<float>input_tensor_values, int batch_size = 1);
 	cv::Mat predict(cv::Mat& input_tensor, int batch_size = 1, int index = 0);
 	std::vector<float> predict(std::vector<float>& input_data, int batch_size = 1, int index = 0);
@@ -43,10 +33,6 @@ private:
 	const int strideSize = 3;//stride size
 
 	float boxThreshold = 0.25;
-
-
-
-
 };
 
 

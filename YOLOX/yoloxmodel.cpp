@@ -1,7 +1,4 @@
 ﻿#include "yoloxmodel.h"
-#include <dnn.hpp>
-
-using namespace cv::dnn;
 
 
 
@@ -31,20 +28,6 @@ yoloxmodelinference::yoloxmodelinference(const wchar_t* onnx_model_path):session
         auto output_node_name = session.GetOutputName(i, allocator);
         this->output_node_names.push_back(output_node_name);
     }
-}
-
-bool yoloxmodelinference::readModelDNN(cv::dnn::Net& net, std::string& netPath, bool isCuda)
-{
-    try {
-        net = readNet(netPath);
-    }
-    catch (const std::exception&) {
-        return false;
-    }
-    //cuda
-    net.setPreferableBackend(cv::dnn::DNN_BACKEND_DEFAULT);
-    net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
-    return true;
 }
 
 float* yoloxmodelinference::predict_test(std::vector<float> input_tensor_values, int batch_size)

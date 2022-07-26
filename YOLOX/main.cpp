@@ -1,5 +1,7 @@
 ﻿#include<ctime>
 #include "yoloxmodel.h"
+#include "yolox_dnn.h"
+using namespace cv::dnn;
 using namespace cv;
 
 /*
@@ -21,24 +23,24 @@ using namespace std;
 
 int main()
 {
+    //使用DNN操作模型
+    std::string model = "./models/model_yolox_13_1_640_640_640_3.onnx";
+    YOLO yolox_dnn;
+    Net net;
+    bool flag = yolox_dnn.initModel(net, model, false);
+    if (flag) {
+        cout << "Init model successful";
+    }
+    else {
+        cout << "Init model fail";
+    }
+
+
+
     //记录程序运行时间
     auto start_time = clock();
     const wchar_t* model_path = L"./models/model_yolox_13.onnx";
     yoloxmodelinference yolox(model_path);
-    cout << "Using OpenCV DNN API" << endl;
-    cv::dnn::Net net;
-    string model_path1 = "./models/model_yolox_13.onnx";
-    yolox.readModelDNN(net, model_path1, false);
-    //生成随机颜色
-    vector<Scalar> color;
-    srand(time(0));
-    for (int i = 0; i < 80; i++) {
-        int b = rand() % 256;
-        int g = rand() % 256;
-        int r = rand() % 256;
-        color.push_back(Scalar(b, g, r));
-    }
-
     printf("Using Onnxruntime C++ API\n");
     //以图像进行推理
     cv::Mat image = cv::imread("./test.jpg");
