@@ -1,17 +1,17 @@
-#include "yoloxmodel.h"
+Ôªø#include "yoloxmodel.h"
 
 
 
 yoloxmodelinference::yoloxmodelinference(const wchar_t* onnx_model_path):session(nullptr), env(nullptr) {
-    //≥ı ºªØª∑æ≥£¨√ø∏ˆΩ¯≥Ã“ª∏ˆª∑æ≥,ª∑æ≥±£¡Ù¡Àœﬂ≥Ã≥ÿ∫Õ∆‰À˚◊¥Ã¨–≈œ¢
+    //ÂàùÂßãÂåñÁéØÂ¢ÉÔºåÊØè‰∏™ËøõÁ®ã‰∏Ä‰∏™ÁéØÂ¢É,ÁéØÂ¢É‰øùÁïô‰∫ÜÁ∫øÁ®ãÊ±†ÂíåÂÖ∂‰ªñÁä∂ÊÄÅ‰ø°ÊÅØ
     this->env = Ort::Env(ORT_LOGGING_LEVEL_WARNING, "yolox");
-    //≥ı ºªØSession—°œÓ
+    //ÂàùÂßãÂåñSessionÈÄâÈ°π
     Ort::SessionOptions session_options;
     session_options.SetInterOpNumThreads(1);
     session_options.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
-    // ¥¥Ω®Session≤¢∞—ƒ£–Õº”‘ÿµΩƒ⁄¥Ê÷–
+    // ÂàõÂª∫SessionÂπ∂ÊääÊ®°ÂûãÂä†ËΩΩÂà∞ÂÜÖÂ≠ò‰∏≠
     this->session = Ort::Session(env, onnx_model_path, session_options);
-    // ‰»Î ‰≥ˆΩ⁄µ„ ˝¡ø∫Õ√˚≥∆
+    //ËæìÂÖ•ËæìÂá∫ËäÇÁÇπÊï∞ÈáèÂíåÂêçÁß∞
     this->num_input_nodes = session.GetInputCount();
     this->num_output_nodes = session.GetOutputCount();
     for (int i = 0; i < this->num_input_nodes; i++)
@@ -43,7 +43,7 @@ float* yoloxmodelinference::predict_test(std::vector<float> input_tensor_values,
 
 cv::Mat yoloxmodelinference::predict(cv::Mat& input_tensor, int batch_size, int index)
 {
-    //ÕºœÒ‘§¥¶¿Ì
+    //ÂõæÂÉèÈ¢ÑÂ§ÑÁêÜ
     int input_tensor_size = input_tensor.cols * input_tensor.rows * 3;
     std::size_t counter = 0;
     std::vector<float> input_data(input_tensor_size);
@@ -78,33 +78,26 @@ cv::Mat yoloxmodelinference::predict(cv::Mat& input_tensor, int batch_size, int 
 }
 
 std::vector<float> yoloxmodelinference::predict(std::vector<float>& input_tensor_values, int batch_size, int index)
-{
-    this->input_node_dims[0] = batch_size;
-    this->output_node_dims[0] = batch_size;
+{   
     float* floatarr = nullptr;
     try
     {
         std::vector<const char*>output_node_names;
-        if (index != -1)
-        {
-            output_node_names = { this->output_node_names[index] };
-        }
-        else
-        {
-            output_node_names = this->output_node_names;
-        }
+        output_node_names = this->output_node_names;
         this->input_node_dims[0] = batch_size;
         auto input_tensor_size = input_tensor_values.size();
         auto memory_info = Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault);
         Ort::Value input_tensor = Ort::Value::CreateTensor<float>(memory_info, input_tensor_values.data(), input_tensor_size, input_node_dims.data(), 4);
-        auto output_tensors = session.Run(Ort::RunOptions{ nullptr }, input_node_names.data(), &input_tensor, 1, output_node_names.data(), 1);
-        assert(output_tensors.size() == 1 && output_tensors.front().IsTensor());
+        auto output_tensors = session.Run(Ort::RunOptions{ nullptr }, input_node_names.data(), &input_tensor, 1, output_node_names.data(), output_node_names.size());
         floatarr = output_tensors.front().GetTensorMutableData<float>();
     }
     catch (Ort::Exception& e)
     {
         throw e;
     }
+    //ÂêéÂ§ÑÁêÜ
+
+    this->output_node_dims[0] = batch_size;
     int64_t output_tensor_size = 1;
     for (auto& it : this->output_node_dims)
     {
