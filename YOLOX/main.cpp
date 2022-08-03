@@ -40,9 +40,13 @@ int main()
         cout << "Init model fail";
     }
     //推理
-    vector<Output> dnn_result;
+    float* pred_data = NULL;
+    
     Mat img = imread("./test.jpg");
-    dnn_result = yolox_dnn.Detect(img, net);
+    yolox_dnn.Detect(img, net, pred_data);
+    
+    
+    
 
 
 
