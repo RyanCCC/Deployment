@@ -13,6 +13,11 @@ using namespace cv;
 
 
 /*
+* 模型下载：
+* yolox_pytorch1.7_onnxv6_1_3_640_640.onnx：https://github.com/Megvii-BaseDetection/YOLOX/tree/main/demo/ONNXRuntime
+*/
+
+/*
 * 环境加载步骤：
 * 1. 初始化环境、会话等
 * 2. 会话中加载模型，得到模型的输入和输出节点
