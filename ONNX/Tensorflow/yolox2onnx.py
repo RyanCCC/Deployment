@@ -16,11 +16,11 @@ yolox = tf.keras.models.load_model('./models/yolox_model')
 
 # 定义模型转onnx的参数，注意假设使用opencv的DNN进行推理，那么维度不能为None
 output_path = os.path.join('./models', yolox.name + "_yolox_13_1_640_640_640_3.onnx")
-# spec = (tf.TensorSpec((None, 640, 640, 3), tf.float32, name="input"),)
-spec = (tf.TensorSpec((1, 640, 640, 3), tf.float32, name="input"),)
-model_proto, _ = tf2onnx.convert.from_keras(yolox, input_signature=spec, opset=13, output_path=output_path)
-output_names = [n.name for n in model_proto.graph.output]
-print(output_names)
+# # spec = (tf.TensorSpec((None, 640, 640, 3), tf.float32, name="input"),)
+# spec = (tf.TensorSpec((1, 640, 640, 3), tf.float32, name="input"),)
+# model_proto, _ = tf2onnx.convert.from_keras(yolox, input_signature=spec, opset=13, output_path=output_path)
+# output_names = [n.name for n in model_proto.graph.output]
+# print(output_names)
 
 
 # 加载图像

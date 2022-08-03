@@ -12,6 +12,10 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/highgui.hpp>
 
+/*
+* onnxruntime进行推理
+*/
+
 class yoloxmodelinference {
 public:
 	yoloxmodelinference(const wchar_t* onnx_model_path);

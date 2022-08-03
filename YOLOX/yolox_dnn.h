@@ -18,7 +18,9 @@ public:
 	}
 	~YOLO(){}
 	bool initModel(cv::dnn::Net& net, std::string& netPath, bool isCuda);
+	//float* blobFromImage(cv::Mat& img);
 	std::vector<Output>& Detect(cv::Mat& image, cv::dnn::Net& net);
+	void decodeBox();
 
 private:
 	//ÍøÂçÊäÈëµÄshape

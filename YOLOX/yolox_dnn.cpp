@@ -45,10 +45,20 @@ std::vector<Output>& YOLO::Detect(Mat& image, Net& net)
 	net.setInput(blob);
 	vector<cv::Mat> netOutputImg;
 	net.forward(netOutputImg, net.getUnconnectedOutLayersNames());
+	//结果数组
+	std::vector<int> classIds;
+	//结果每个id对应置信度数组
+	std::vector<float> confidences;
+	std::vector<cv::Rect> confidence;
 	cout << "finish" << endl;
 	return output;
 
 
 
+
+}
+
+void YOLO::decodeBox()
+{
 
 }

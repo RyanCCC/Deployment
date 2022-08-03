@@ -24,7 +24,7 @@ using namespace std;
 int main()
 {
     //使用DNN操作模型
-    std::string model = "./models/model_yolox_13_1_640_640_640_3.onnx";
+    std::string model = "./models/yolox_pytorch1.7_onnxv6_1_3_640_640.onnx";
     YOLO yolox_dnn;
     Net net;
     bool flag = yolox_dnn.initModel(net, model, false);
