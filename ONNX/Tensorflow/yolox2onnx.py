@@ -39,18 +39,18 @@ outputs_names =  ['concatenate_13', 'concatenate_14', 'concatenate_15']
 onnx_pred = m.run(outputs_names, {"input": image_data})
 
 # 调用tensorflow serving 推理
-data = json.dumps({
-    "instances": image_data.tolist()
-    })
-headers = {"content-type": "application/json"}
-tfx_pred = requests.post(
-    'http://***.****.***.***:8501/v1/models/yolox_model:predict',
-    data=data, headers=headers)
-boxes_1 = json.loads(tfx_pred.text)['predictions'][0]['concatenate_13']
-boxes_2 = json.loads(tfx_pred.text)['predictions'][0]['concatenate_14']
-boxes_3 = json.loads(tfx_pred.text)['predictions'][0]['concatenate_15']
-# 后续对box进行处理，这里不多讲述，可以参考DecodeBox
-print('tfx_pred')
+# data = json.dumps({
+#     "instances": image_data.tolist()
+#     })
+# headers = {"content-type": "application/json"}
+# tfx_pred = requests.post(
+#     'http://***.****.***.***:8501/v1/models/yolox_model:predict',
+#     data=data, headers=headers)
+# boxes_1 = json.loads(tfx_pred.text)['predictions'][0]['concatenate_13']
+# boxes_2 = json.loads(tfx_pred.text)['predictions'][0]['concatenate_14']
+# boxes_3 = json.loads(tfx_pred.text)['predictions'][0]['concatenate_15']
+# # 后续对box进行处理，这里不多讲述，可以参考DecodeBox
+# print('tfx_pred')
 
 
 # Decode outputs

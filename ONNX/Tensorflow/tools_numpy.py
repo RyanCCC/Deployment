@@ -68,11 +68,19 @@ def get_classes(classes_path):
 
 def DecodeBox(outputs,image_shape, input_shape, class_names,confidence=0.7, max_boxes=100):
     num_classes = len(class_names)
-    outputs = outputs[:-1]
     batch_size = np.shape(outputs[0])[0]
     grids = []
     strides = []
     hw = [np.shape(x)[1:3] for x in outputs]
+    '''
+    outputs before:
+    batch_size, 80, 80, 4+1+num_classes
+    batch_size, 40, 40, 4+1+num_classes
+    batch_size, 20, 20, 4+1+num_classes
+
+    outputs after:
+    batch_size, 8400, 8400, 4+1+num_classes
+    '''
     outputs = np.concatenate([np.reshape(x, [batch_size, -1, 5 + num_classes]) for x in outputs], axis = 1)
     for i in range(len(hw)):
         grid_x, grid_y  = np.meshgrid(np.arange(hw[i][1]), np.arange(hw[i][0]))
