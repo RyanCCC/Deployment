@@ -36,7 +36,7 @@ private:
 	const int netWidth = 640;   //ONNX图片输入宽度
 	const int netHeight = 640;  //ONNX图片输入高度
 	float boxThreshold = 0.25;
-	float classThreshold = 0.25;
+	float classThreshold = 0;
 	float nmsThreshold = 0.45;
 	float nmsScoreThreshold = boxThreshold * classThreshold;
 	int NUM_CLASSES = 80;

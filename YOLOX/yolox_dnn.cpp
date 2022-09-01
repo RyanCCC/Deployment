@@ -161,7 +161,7 @@ void YOLO::decodeBox(float* prob, std::vector<Output>& objects, float scale, con
 	std::vector<int> strides = { 8, 16, 32 };
 	std::vector<GridAndStride> grid_strides;
 	generate_grids_and_stride(strides, grid_strides);
-	generate_yolox_proposals(grid_strides, prob, boxThreshold, proposals);
+	generate_yolox_proposals(grid_strides, prob, nmsScoreThreshold, proposals);
 	std::cout << "num of boxes before nms: " << proposals.size() << std::endl;
 	//¾­¹ýNMSËã·¨
 	std::vector<int> picked;
