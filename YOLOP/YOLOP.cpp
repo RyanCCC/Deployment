@@ -221,7 +221,7 @@ Mat YOLOP::detect(Mat& srcimg)
 int main()
 {
 	YOLOP yolo_model("yolop.onnx", 0.25, 0.45, 0.5);
-	string imgpath = "images/0ace96c3-48481887.jpg";
+	string imgpath = "./images/1.jpg";
 	Mat srcimg = imread(imgpath);
 	Mat outimg = yolo_model.detect(srcimg);
 
