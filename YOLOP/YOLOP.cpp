@@ -12,6 +12,7 @@ using namespace std;
 
 /*
 * 参考：https://github.com/hpc203/YOLOP-opencv-dnn
+* onnx文件从百度云盘下载，链接：https://pan.baidu.com/s/1A_9cldUHeY9GUle_HO4Crg 提取码：mf1x
 */
 
 class YOLOP {
