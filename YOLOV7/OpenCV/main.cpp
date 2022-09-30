@@ -9,6 +9,8 @@ using namespace cv;
 using namespace dnn;
 using namespace std;
 
+//参考：https://github.com/hpc203/yolov7-opencv-onnxrun-cpp-py。模型权重下载地址：https://pan.baidu.com/s/1FoC0n7qMz4Fz0RtDGpI6xQ 密码: 7mhs
+
 struct Net_config
 {
 	float confThreshold;
