@@ -215,7 +215,7 @@ int main()
 {
 	Net_config YOLOV7_nets = { 0.3, 0.5, "../../models/yolov7_640x640.onnx" };   ////choices=["models/yolov7_640x640.onnx", "models/yolov7-tiny_640x640.onnx", "models/yolov7_736x1280.onnx", "models/yolov7-tiny_384x640.onnx", "models/yolov7_480x640.onnx", "models/yolov7_384x640.onnx", "models/yolov7-tiny_256x480.onnx", "models/yolov7-tiny_256x320.onnx", "models/yolov7_256x320.onnx", "models/yolov7-tiny_256x640.onnx", "models/yolov7_256x640.onnx", "models/yolov7-tiny_480x640.onnx", "models/yolov7-tiny_736x1280.onnx", "models/yolov7_256x480.onnx"]
 	YOLOV7 net(YOLOV7_nets);
-	string imgpath = "./samples/dog.jpg";
+	string imgpath = "./samples/bus.jpg";
 	Mat srcimg = imread(imgpath);
 	net.detect(srcimg);
 
