@@ -54,7 +54,7 @@ onnx_pred = m.run(outputs_names, {"input": image_data})
 
 
 # Decode outputs
-classes_path='./village.names'
+classes_path='./voc.names'
 class_names = get_classes(classes_path)
 font = ImageFont.truetype(font='./simhei.ttf', size=np.floor(3e-2 * image.size[1] + 0.5).astype('int32'))
 thickness = int(max((image.size[0] + image.size[1]) // np.mean(input_shape), 1))
