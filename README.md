@@ -1,12 +1,17 @@
 # Deployment
 
-部署深度学习应用
+深度学习模型应用部署，主要路线包括：
+
+1. 模型优化压缩：量化与剪枝
+2. ONNX部署
+3. Tensorrt部署
+4. Openvino部署
 
 ## 模型部署
 
 ### 模型优化
 
-模型的优化包括模型的量化和剪枝。模型的量化与剪枝都是通过tensorflow简单的API进行操作。
+模型的优化包括模型的量化和剪枝。模型的量化与剪枝都是通过`Tensorflow`简单的API进行操作。
 
 #### 模型量化
 
@@ -56,7 +61,7 @@ Pytorch的转换主要以YOLOV4为例子，YOLOV4权重下载地址：[百度网
 
 - Keras
 
-Keras主要使用Unet作为样例。关于转换样例，可以参考我的仓库：[unet-tensorflow](https://github.com/RyanCCC/unet-tensorflow)，喜欢的可以给个star。在这里可能有个疑惑，tensorflow2.\*已经把keras给吃掉了，在这里为什么还要分开keras和tensorflow呢？Keras的话主要对`h5`文件进行转换。而Tensorflow主要对`pb`文件进行转换。在TensorFlow2的环境下会出现以下错误，解决方案也提示很清楚了。
+Keras主要使用Unet作为样例。关于转换样例，可以参考我的仓库：[unet-tensorflow](https://github.com/RyanCCC/unet-tensorflow)，喜欢的可以给个star。Keras框架主要对`h5`模型文件进行转换。而Tensorflow主要对`pb`模型文件进行转换。在`TensorFlow2`的环境下会出现以下错误，解决方案也提示很清楚了。
 
 ```
 This is a tensorflow keras model, but keras standalone converter is used. Please set environment variable TF_KERAS = 1 before importing keras2onnx.
@@ -116,3 +121,8 @@ OpenVino环境要求“很高”，如下所示，把我给劝退了。后续还
 ## Tensorflow Serving部署
 
 可参考我的博客：[模型部署 利用Tensorflow Serving部署模型](https://blog.csdn.net/u012655441/article/details/125332182)
+
+
+## 参考
+
+1. [Model_Deployment](https://github.com/jjw-DL/Model_Deployment)
