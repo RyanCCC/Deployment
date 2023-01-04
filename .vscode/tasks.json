@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "type": "shell",
+        "label": "g++ build active file",
+        "command": "/usr/bin/g++",
+        "args": [
+          "-g", 
+          "${file}", 
+          "-o", 
+          "${fileDirname}/${fileBasenameNoExtension}",
+          "`pkg-config", "--cflags", "--libs", "opencv4`",       
+          // "-I", "/usr/local/include",        
+          // "-I", "/usr/local/include/opencv4",       
+          // "-I", "/usr/local/include/opencv4/opencv2",       
+          // "-L", "/usr/local/lib",        
+          // "-l", "opencv_core",        
+          // "-l", "opencv_imgproc",        
+          // "-l", "opencv_imgcodecs",
+          // "-l", "opencv_video",        
+          // "-l", "opencv_ml",
+          // "-l", "opencv_highgui",
+          // "-l", "opencv_objdetect",
+          // "-l", "opencv_flann",
+          // "-l", "opencv_imgcodecs",
+          // "-l", "opencv_photo",
+          // "-l", "opencv_videoio"
+        ],
+        "options": {
+          "cwd": "/usr/bin"
+        },
+        "problemMatcher": ["$gcc"],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      }
+    ]
+}
