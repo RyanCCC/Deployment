@@ -1,0 +1,30 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "type": "shell",
+        "label": "g++ build active file",
+        "command": "C:/mingw64/bin/g++.exe",
+        "args": [
+          "-g", 
+          "${file}", 
+          "-o", 
+          "${fileDirname}/${fileBasenameNoExtension}",
+          "-I",
+          /*修改编译安装好的OpenCV路径*/
+          "C:/opencv/build/x64/mingw/install/include",
+          "-I",
+          "C:/opencv/build/x64/mingw/install/include/opencv2",
+          "-L",
+          "C:/opencv/build/x64/mingw/install/x64/mingw/bin/lib*"
+        ],
+        "options": {
+          "cwd": "C:/mingw64/bin"
+        },
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      }
+    ]
+}
